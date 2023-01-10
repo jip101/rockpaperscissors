@@ -41,9 +41,6 @@ function playRound(player, cpu) {
         console.log(`You lose, ${cpu} beats ${player}`)
         return "lose";
     }
-    else if (player === "error") {
-        return;
-    }
     else {
         console.log(`Tie, both selected ${cpu}`)
     }
@@ -71,10 +68,7 @@ function game() {
                 i++;
                return console.log(`You lose! CPU = (${cpuScore}/${rounds})`)
             }
-        }
-        else if (results === "error") {
-            return console.log("Enter rock, paper, or scissors");
-        }     
+        }  
         console.log(`Player score = ${playerScore} | CPU score = ${cpuScore}`)
     }
 }
