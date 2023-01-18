@@ -1,4 +1,61 @@
-game();
+let playerScore;
+let cpuScore;
+let rounds;
+let playerTotalScore = document.getElementById("playerScore");
+let cpuTotalScore = document.getElementById("cpuScore");
+
+let playerChoice = document.getElementsByClassName("playerChoice");
+let gameResults = document.getElementById("gameResults");
+let length = playerChoice.length;
+
+let newGameButton = document.getElementById("newGame");
+newGameButton.addEventListener("click", newGame);
+newGame();
+
+
+function newGame() {
+    newGameButton.style.display = "none";
+    playerScore = 0;
+    cpuScore = 0;
+    rounds = 5;
+
+    for (let i = 0; i < length; i++) {
+        playerChoice[i].addEventListener("click", updateScore)
+    };
+
+    document.getElementById("roundResults").textContent = "";
+    document.getElementById("gameResults").textContent = "";
+
+    playerTotalScore.textContent = `${playerScore}/${rounds}`;
+    cpuTotalScore.textContent = `${cpuScore}/${rounds}`;
+}
+
+
+function updateScore () {
+    result = playRound(this.value, getComputerChoice());
+    if (result === "win") {
+        playerScore++;
+        playerTotalScore.textContent = `${playerScore}/${rounds}`;
+        if (playerScore >= rounds/2) {
+            gameResults.textContent = `You win! Player = ${playerScore} wins of ${playerScore + cpuScore} rounds`;
+            newGameButton.style.display = "";
+            for (let j = 0; j < length; j++) {
+                playerChoice[j].removeEventListener("click", updateScore);
+            }
+        }
+    }
+    else if (result === "lose") {
+        cpuScore++;
+        cpuTotalScore.textContent = `${cpuScore}/${rounds}`;
+        if (cpuScore >= rounds/2) {
+            gameResults.textContent = `You lose! CPU = ${cpuScore} wins of ${playerScore + cpuScore} rounds`;
+            newGameButton.style.display = "";
+            for (let j = 0; j < length; j++) {
+                playerChoice[j].removeEventListener("click", updateScore);
+            }
+        }
+    }
+}
 
 
 function getComputerChoice() {
@@ -18,57 +75,21 @@ function getComputerChoice() {
 }
 
 
-function getPlayerChoice() {
-    let answer;
-    do {
-        answer = prompt("Select rock, paper, or scissors: ");
-        answer = answer.toLowerCase();
-    } while (answer !== "rock" && answer !== "paper" && answer !== "scissors");
-    return answer;
-    }
-
-
 function playRound(player, cpu) {
+    let roundResults = document.getElementById("roundResults")
     if (player == "rock" && cpu == "scissors" ||
         player == "paper" && cpu == "rock" ||
         player == "scissors" && cpu == "paper") {
-        console.log(`You win, ${player} beats ${cpu}`)
+        roundResults.textContent = `You win this round, ${player} beats ${cpu}`
         return "win";
     }
     else if (cpu == "rock" && player == "scissors" ||
         cpu == "paper" && player == "rock" ||
         cpu == "scissors" && player == "paper") {
-        console.log(`You lose, ${cpu} beats ${player}`)
+        roundResults.textContent = `You lose this round, ${cpu} beats ${player}`
         return "lose";
     }
     else {
-        console.log(`Tie, both selected ${cpu}`)
-    }
-}
-
-
-function game() {
-    let playerScore = 0;
-    let cpuScore = 0;
-    let rounds = 5;
-    for (let i = 0; i < rounds;){
-        let results = playRound(getPlayerChoice(), getComputerChoice());
-        if (results === "win") {
-             playerScore++;
-             if (playerScore > (rounds / 2))
-             {
-                i++;
-                 return console.log(`You win! Player = (${playerScore}/${rounds})`)
-             }
-        }
-        else if (results === "lose") {
-            cpuScore++;
-            if (cpuScore > (rounds / 2))
-            {
-                i++;
-               return console.log(`You lose! CPU = (${cpuScore}/${rounds})`)
-            }
-        }  
-        console.log(`Player score = ${playerScore} | CPU score = ${cpuScore}`)
+        roundResults.textContent = `Tie, both selected ${cpu}`
     }
 }
