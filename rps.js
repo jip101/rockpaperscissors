@@ -17,7 +17,7 @@ function newGame() {
     newGameButton.style.display = "none";
     playerScore = 0;
     cpuScore = 0;
-    rounds = 5;
+    rounds = 9;
 
     for (let i = 0; i < length; i++) {
         playerChoice[i].addEventListener("click", updateScore)
